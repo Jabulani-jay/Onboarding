@@ -641,11 +641,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\projects\\Onboarding\\Onboarding\\Onboarding.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Source\\Repos\\Onboarding\\Onboarding\\Onboarding.csproj",
       "projectName": "Onboarding",
-      "projectPath": "D:\\projects\\Onboarding\\Onboarding\\Onboarding.csproj",
+      "projectPath": "C:\\Users\\User\\Source\\Repos\\Onboarding\\Onboarding\\Onboarding.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\projects\\Onboarding\\Onboarding\\obj\\",
+      "outputPath": "C:\\Users\\User\\Source\\Repos\\Onboarding\\Onboarding\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -701,7 +701,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   }

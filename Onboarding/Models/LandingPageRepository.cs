@@ -11,11 +11,11 @@ namespace Onboarding.Models
 
     {
         // Retrieve data from data access
-        private DataAccess dataAccess = new();
+        private WebContent webContent = new();
 
        public LandingPage landingPageContent()
         {
-            DataSet  dataset = dataAccess.getLandingPageSet(); // data from dataset.
+            DataSet  dataset = webContent.WelomePageContent ; // data from dataset.
             LandingPage landingPageModel = null;
 
             foreach (DataTable table in dataset.Tables) // iterate tables
