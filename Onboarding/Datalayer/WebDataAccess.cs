@@ -9,14 +9,15 @@ namespace Onboarding.Datalayer
 {
     public class WebDataAccess
     {
-        public String ContentConnectionString = @"Server=.;Database=Contentdb; trusted_Connection=True";
-        
+        public String ContentConnectionString { get; set; }
+        public string SqlCmd { get; set; }
+
         // Accessing Landing Page content
         // open connection
         // send command
         // retrieve data via Adapter
         // populate data set and return it. 
-        public DataSet GetDataSet(string SqlCmd)
+        public DataSet GetDataSet()
         {
             using (SqlConnection myConnection = new(ContentConnectionString))
             {

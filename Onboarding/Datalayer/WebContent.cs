@@ -11,7 +11,9 @@ namespace Onboarding.Datalayer
         private WebDataAccess WebData = new();
         public WebContent()
         {
-            WelomePageContent = WebData.GetDataSet("SELECT * FROM landing_page");
+            WebData.SqlCmd = "SELECT * FROM landing_page";
+            WebData.ContentConnectionString = @"Server=.;Database=Contentdb; trusted_Connection=True";
+            WelomePageContent = WebData.GetDataSet();
         }
 
         // 
