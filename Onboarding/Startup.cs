@@ -28,6 +28,8 @@ namespace Onboarding
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ILandingPage, LandingPageRepository>();
+            services.AddScoped<IUser, UserRepository>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
