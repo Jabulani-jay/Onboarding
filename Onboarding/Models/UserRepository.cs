@@ -28,7 +28,7 @@ namespace Onboarding.Models
                     {   
                         Firstname= Convert.ToString(row[1]),
                         Lastname= Convert.ToString(row[2]),
-                        UserEmail = Convert.ToString(row[1]),
+                        UserEmail = Convert.ToString(row[3]), // UserEmail row is not index 1 but 3
                         Password = "Not available"
                     };
 
