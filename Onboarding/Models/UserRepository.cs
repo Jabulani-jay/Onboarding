@@ -17,22 +17,40 @@ namespace Onboarding.Models
         {
             User userdetails=null;
             dataAccess.ConnectionString = connection;
-            dataAccess.SqlCmd = $"SELECT * FROM details WHERE email= {email} AND password={password}";
+            dataAccess.SqlCmd = $"SELECT * FROM details WHERE email= '{email}' AND password='{password}'";
             DataSet UserData = dataAccess.Login(email, password);
 
             foreach (DataTable table in UserData.Tables) // iterate tables
             {
-                foreach (DataRow row in table.Rows) // iterate row
+                if (table.Rows.Count != 0)
+                {
+                    foreach (DataRow row in table.Rows) // iterate row
+                    {
+
+                        userdetails = new User()
+                        {
+                            UserID = Convert.ToInt32(row[0]),
+                            Firstname = Convert.ToString(row[1]),
+                            Lastname = Convert.ToString(row[2]),
+                            UserEmail = Convert.ToString(row[1]),
+                            Password = "Not available",
+                            LoginStatus = true
+                        };
+
+                    }//end foreach row
+                }
+                else
                 {
                     userdetails = new User()
-                    {   
-                        Firstname= Convert.ToString(row[1]),
-                        Lastname= Convert.ToString(row[2]),
-                        UserEmail = Convert.ToString(row[1]),
-                        Password = "Not available"
+                    {
+                        Firstname = "Not available",
+                        Lastname = "Not available",
+                        UserEmail = "Not available",
+                        Password = "Not available",
+                        LoginStatus = false
                     };
-
-                }//end foreach row
+                }
+                
             }
 
             return userdetails;
