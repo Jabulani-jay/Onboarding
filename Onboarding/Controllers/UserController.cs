@@ -17,25 +17,21 @@ namespace Onboarding.Controllers
         {
             _UserRepository = UserRepository;
         }
-        [HttpGet]
-        public bool RegisterUser(string firstname, string lastname, string email, string Password)
+       
+
+
+        [HttpGet("Login")]
+        public User Login(string email, string password)
         {
-            User NewUser = new();
-            NewUser.Firstname = firstname;
-            NewUser.Lastname = lastname;
-            NewUser.UserEmail = email;
-            NewUser.Password = Password;
+            User userDetails;
+            userDetails = _UserRepository.Login(email, password);
+            return userDetails;
+         }
 
-           return _UserRepository.RegisterUser(NewUser);
-        }
-
-        //[HttpGet]
-
-        //public User Login(string email, string password)
-        //{
-        //    User userDetails;
-        //    userDetails = _UserRepository.Login(email, password);
-        //    return userDetails;
-        //}
+        [HttpPost("Register user")]
+        public bool RegisterUser(User NewUser)
+        {
+            return _UserRepository.RegisterUser(NewUser);
+        } 
     }
 }

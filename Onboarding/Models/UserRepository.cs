@@ -34,7 +34,7 @@ namespace Onboarding.Models
                             Lastname = Convert.ToString(row[2]),
                             UserEmail = Convert.ToString(row[1]),
                             Password = "Not available",
-                            LoginStatus = true
+                            
                         };
 
                     }//end foreach row
@@ -42,12 +42,11 @@ namespace Onboarding.Models
                 else
                 {
                     userdetails = new User()
-                    {
+                    { 
                         Firstname = "Not available",
                         Lastname = "Not available",
                         UserEmail = "Not available",
                         Password = "Not available",
-                        LoginStatus = false
                     };
                 }
                 
