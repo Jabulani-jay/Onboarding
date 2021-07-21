@@ -55,9 +55,9 @@ namespace Onboarding.Models
             return userdetails;
         }
 
-        public bool RegisterUser(User newUser)
+        public string RegisterUser(User newUser)
         {
-             bool status; 
+             string status; 
             dataAccess.ConnectionString = connection;
             status= dataAccess.CreateUser(newUser);
 

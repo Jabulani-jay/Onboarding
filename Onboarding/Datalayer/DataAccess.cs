@@ -43,22 +43,36 @@ namespace Onboarding.Datalayer
                 return myDataSet;
             };//end sqlConnection  
         }//end get
-        public bool CreateUser( User newUser )
+        public string CreateUser( User newUser )
         {
             SqlCmd = "INSERT INTO details (firstName, lastName, email, password) VALUES (@Firstname, @Lastname, @Email, @Password)";
-            bool InsertData=false;
-            using (SqlConnection myConnection = new(ConnectionString))
+            try
             {
-                myConnection.Open();
-                using SqlCommand myCommand = new SqlCommand(SqlCmd, myConnection);
-                myCommand.Parameters.AddWithValue("@firstname",Convert.ToString(newUser.Firstname));
-                myCommand.Parameters.AddWithValue("@lastname", Convert.ToString(newUser.Lastname));
-                myCommand.Parameters.AddWithValue("@email", Convert.ToString(newUser.UserEmail));
-                myCommand.Parameters.AddWithValue("@password", Convert.ToString(newUser.Password));
-                myCommand.ExecuteNonQuery();
-                InsertData = true; 
-            };//end sqlConnection 
-            return InsertData;
+                // Try to insert
+                using (SqlConnection myConnection = new(ConnectionString))
+                {
+                    myConnection.Open();
+                    using SqlCommand myCommand = new SqlCommand(SqlCmd, myConnection);
+                    myCommand.Parameters.AddWithValue("@firstname", Convert.ToString(newUser.Firstname));
+                    myCommand.Parameters.AddWithValue("@lastname", Convert.ToString(newUser.Lastname));
+                    myCommand.Parameters.AddWithValue("@email", Convert.ToString(newUser.UserEmail));
+                    myCommand.Parameters.AddWithValue("@password", Convert.ToString(newUser.Password));
+                    myCommand.ExecuteNonQuery();
+                };//end sqlConnection 
+                return "User created";
+            }
+            catch (SqlException exception)
+            {
+                if (exception.Number == 2627) // Cannot insert duplicate key row in object error
+                {
+                    // Handle duplicate key error
+
+                    return "error adding user";
+                }
+                else
+                    throw ; // Throw exception if this exception is unexpected
+            }
+            
         }
     }
 }

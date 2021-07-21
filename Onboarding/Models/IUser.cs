@@ -7,7 +7,7 @@ namespace Onboarding.Models
 {
     public interface IUser
     {
-        public bool RegisterUser(User newUser);
+        public string RegisterUser(User newUser);
 
         public User Login(string email, string password);
     }

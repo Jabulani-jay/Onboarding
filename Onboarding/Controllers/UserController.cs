@@ -29,7 +29,7 @@ namespace Onboarding.Controllers
          }
 
         [HttpPost("Register user")]
-        public bool RegisterUser(User NewUser)
+        public string RegisterUser(User NewUser)
         {
             return _UserRepository.RegisterUser(NewUser);
         } 
