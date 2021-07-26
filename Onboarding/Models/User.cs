@@ -8,7 +8,9 @@ namespace Onboarding.Models
 {
     public class User
     {
-        public int UserID { get; set; }
+        public int UserID { get; }
+        public int UserRole { get; }
+
         [Required]
         [MinLength(2)]
         [MaxLength(30)]

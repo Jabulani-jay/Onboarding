@@ -10,5 +10,7 @@ namespace Onboarding.Models
         public string RegisterUser(User newUser);
 
         public User Login(string email, string password);
+
+        public string PasswordReset(string email, string password);
     }
 }

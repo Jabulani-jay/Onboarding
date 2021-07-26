@@ -29,7 +29,6 @@ namespace Onboarding.Models
 
                         userdetails = new User()
                         {
-                            UserID = Convert.ToInt32(row[0]),
                             Firstname = Convert.ToString(row[1]),
                             Lastname = Convert.ToString(row[2]),
                             UserEmail = Convert.ToString(row[1]),
@@ -62,6 +61,14 @@ namespace Onboarding.Models
             status= dataAccess.CreateUser(newUser);
 
             return status;
+        }
+    public string PasswordReset(string email, string password)
+        {
+            dataAccess.ConnectionString = connection;
+            dataAccess.SqlCmd = "update details set password=@password where email=@email";
+            string message=dataAccess.PasswordReset(email,password);
+            return message;
+            
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Onboarding.Datalayer
 {
     public class DataAccess
     {
-        public String ConnectionString { get; set; }
+        public string ConnectionString { get; set; }
         public string SqlCmd { get; set; }
 
         // Accessing Landing Page content
@@ -63,16 +63,30 @@ namespace Onboarding.Datalayer
             }
             catch (SqlException exception)
             {
-                if (exception.Number == 2627) // Cannot insert duplicate key row in object error
+                if (exception.Number == 2601)// Cannot insert duplicate key row in object error01
                 {
-                    // Handle duplicate key error
+                    // check column where error occured
 
-                    return "error adding user";
+                    return "error adding user duplicate email or password found";
                 }
                 else
                     throw ; // Throw exception if this exception is unexpected
             }
             
+        }
+        public string PasswordReset(string email, string password)
+        {
+            string message;
+            using (SqlConnection myConnection = new(ConnectionString))
+            {
+                myConnection.Open();
+                using SqlCommand myCommand = new SqlCommand(SqlCmd, myConnection);
+                myCommand.Parameters.AddWithValue("@email", email);
+                myCommand.Parameters.AddWithValue("@password",password);
+                myCommand.ExecuteNonQuery();
+                message= "password changed";
+            };//end sqlConnection 
+            return message;
         }
     }
 }
