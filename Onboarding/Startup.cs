@@ -29,6 +29,7 @@ namespace Onboarding
         {
             services.AddScoped<ILandingPage, LandingPageRepository>();
             services.AddScoped<IUser, UserRepository>();
+            services.AddScoped<IAdmin, AdminRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

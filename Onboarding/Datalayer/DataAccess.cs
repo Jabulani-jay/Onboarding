@@ -88,5 +88,22 @@ namespace Onboarding.Datalayer
             };//end sqlConnection 
             return message;
         }
+        public string UpdateActive(int id)
+
+        {
+            string ResponseMessage;
+
+                // Try to insert
+                using (SqlConnection myConnection = new(ConnectionString))
+                {
+                    myConnection.Open();
+                    using SqlCommand myCommand = new SqlCommand(SqlCmd, myConnection);
+                    myCommand.Parameters.AddWithValue("@id",id);
+                    myCommand.ExecuteNonQuery();
+                    ResponseMessage = "Account deactivated";
+                };//end sqlConnection 
+            return ResponseMessage;
+
+        }
     }
 }
