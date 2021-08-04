@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Onboarding.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,6 +31,12 @@ namespace Onboarding.Controllers
         {
 
             return _AdminRepository.activateUser(id);
+        }
+        [HttpGet("Get Cohort")]
+        public string GetCohort()
+        {
+
+            return _AdminRepository.GetCohort();
         }
     }
 }

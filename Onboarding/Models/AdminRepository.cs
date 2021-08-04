@@ -1,6 +1,8 @@
-﻿using Onboarding.Datalayer;
+﻿using Newtonsoft.Json;
+using Onboarding.Datalayer;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +31,21 @@ namespace Onboarding.Models
             string ResponseMsg = "User active";
 
             return ResponseMsg;
+        }
+
+        public string GetCohort()
+        {
+            dataAccess.ConnectionString = connection;
+            dataAccess.SqlCmd = $"select [UserId] ,[role],[firstname],[lastname],[email],[active] from Details";
+
+            DataSet dataset= dataAccess.GetDataSet();            
+
+            return ConvertDataSetasJSON(dataset);
+
+        }
+        private static string ConvertDataSetasJSON(DataSet dataSet)
+        {
+            return JsonConvert.SerializeObject(dataSet.Tables[0]);
         }
     }
 }

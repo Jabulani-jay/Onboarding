@@ -8,7 +8,7 @@ namespace Onboarding.Models
 {
     public class User
     {
-        public int UserID { get; }
+        public int UserID { get; set; }
         public int UserRole { get; }
 
         [Required]
