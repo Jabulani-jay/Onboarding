@@ -47,5 +47,11 @@ namespace Onboarding.Models
         {
             return JsonConvert.SerializeObject(dataSet.Tables[0]);
         }
+
+        public string AddEmail(string email)
+        {
+            dataAccess.ConnectionString = connection;
+            return dataAccess.AddEmail(email);
+        }
     }
 }

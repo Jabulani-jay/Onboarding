@@ -63,11 +63,14 @@ namespace Onboarding.Datalayer
             }
             catch (SqlException exception)
             {
-                if (exception.Number == 2601)// Cannot insert duplicate key row in object error01
+                if (exception.Number == 2627)// Cannot insert duplicate key row in object error01
                 {
                     // check column where error occured
 
                     return "error adding user duplicate email or password found";
+                } else if (exception.Number == 547)
+                {
+                    return "email not permitted to register";
                 }
                 else
                     throw ; // Throw exception if this exception is unexpected
@@ -103,6 +106,34 @@ namespace Onboarding.Datalayer
                     ResponseMessage = "Account deactivated";
                 };//end sqlConnection 
             return ResponseMessage;
+
+        }
+        public string AddEmail(string email)
+        {
+            SqlCmd = "INSERT INTO registered_emails (email) VALUES (@Email)";
+            try
+            {
+                // Try to insert
+                using (SqlConnection myConnection = new(ConnectionString))
+                {
+                    myConnection.Open();
+                    using SqlCommand myCommand = new SqlCommand(SqlCmd, myConnection);
+                    myCommand.Parameters.AddWithValue("@Email", Convert.ToString(email));
+                    myCommand.ExecuteNonQuery();
+                };//end sqlConnection 
+                return $"Email:{email} Added successfully";
+            }
+            catch (SqlException exception)
+            {
+                if (exception.Number == 2601)// Cannot insert duplicate key row in object error01
+                {
+                    // check column where error occured
+
+                    return "error adding user duplicate email";
+                }
+                else
+                    throw; // Throw exception if this exception is unexpected
+            }
 
         }
     }

@@ -18,7 +18,12 @@ namespace Onboarding.Controllers
         {
             _AdminRepository = AdminRepository;
         }
-
+        [HttpPost("Add User email")]
+        public string AddEmail(string email)
+        {
+            string message= _AdminRepository.AddEmail(email);
+            return message;
+        }
         [HttpPost("Deactivate User")]
         public string DeactivateUser(int id)
         {
