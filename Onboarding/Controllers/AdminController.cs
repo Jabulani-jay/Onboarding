@@ -14,34 +14,52 @@ namespace Onboarding.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IAdmin _AdminRepository;
-        public AdminController(IAdmin AdminRepository)
+        private readonly IAuth _AdminDictionary;
+        public AdminController(IAdmin AdminRepository, IAuth AdminDictionary)
         {
             _AdminRepository = AdminRepository;
+            _AdminDictionary = AdminDictionary;
         }
-        [HttpPost("Add User email")]
-        public string AddEmail(string email)
-        {
-            string message= _AdminRepository.AddEmail(email);
-            return message;
-        }
-        [HttpPost("Deactivate User")]
-        public string DeactivateUser(int id)
+        [HttpPost("AddUserEmail")]
+        public string AddEmail(string email, int adminId, int role)
         {
 
-            return _AdminRepository.DeactivateUser(id);
+            if (_AdminDictionary.IsAdmin(role))
+            {
+                string message = _AdminRepository.AddEmail(email, adminId);
+                return message;
+            }
+            else return "User not allowed to perfom this action";
+
+        }
+        [HttpPost("DeactivateUser")]
+        public string DeactivateUser(int userId, int adminId, int role)
+        {
+            if (_AdminDictionary.IsAdmin(role))
+            {
+                return _AdminRepository.DeactivateUser(userId, adminId);
+            }
+            else return "User not allowed to perfom this action";
         }
 
-        [HttpPost("activate User")]
-        public string ActivateUser(int id)
+        [HttpPost("ActivateUser")]
+        public string ActivateUser(int userId, int adminId, int role)
         {
+            if (_AdminDictionary.IsAdmin(role))
+            {
+                return _AdminRepository.activateUser(userId, adminId);
 
-            return _AdminRepository.activateUser(id);
+            }
+            else return "User not allowed to perfom this action";
         }
-        [HttpGet("Get Cohort")]
-        public string GetCohort()
+        [HttpGet("GetCohort")]
+        public string GetCohort(int adminId, int role)
         {
-
-            return _AdminRepository.GetCohort();
+            if (_AdminDictionary.IsAdmin(role))
+            {
+                return _AdminRepository.GetCohort(adminId);
+            }
+            else return "User not allowed to perfom this action";
         }
     }
 }

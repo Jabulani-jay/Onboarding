@@ -11,8 +11,6 @@ namespace Onboarding.Models
     {
         DataAccess dataAccess = new();
         string connection = @"Server=.;Database=Users; trusted_Connection=True";
-
-
         public User Login(string email, string password)
         {
             User userdetails=null;
@@ -29,9 +27,11 @@ namespace Onboarding.Models
 
                         userdetails = new User()
                         {
-                            Firstname = Convert.ToString(row[1]),
-                            Lastname = Convert.ToString(row[2]),
-                            UserEmail = Convert.ToString(row[1]),
+                            UserID=Convert.ToInt32(row[0]),
+                            UserRole = Convert.ToInt32(row[1]),
+                            Firstname = Convert.ToString(row[2]),
+                            Lastname = Convert.ToString(row[3]),
+                            UserEmail = Convert.ToString(row[4]),
                             Password = "Not available",
                             
                         };
@@ -53,7 +53,6 @@ namespace Onboarding.Models
 
             return userdetails;
         }
-
         public string RegisterUser(User newUser)
         {
              string status; 
@@ -62,7 +61,7 @@ namespace Onboarding.Models
 
             return status;
         }
-    public string PasswordReset(string email, string password)
+        public string PasswordReset(string email, string password)
         {
             dataAccess.ConnectionString = connection;
             dataAccess.SqlCmd = "update details set password=@password where email=@email";

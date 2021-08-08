@@ -12,28 +12,29 @@ namespace Onboarding.Models
     {
         DataAccess dataAccess = new();
         string connection = @"Server=.;Database=Users; trusted_Connection=True";
-        public string DeactivateUser(int id)
+        public string DeactivateUser(int userId, int adminId)
         {
             dataAccess.ConnectionString = connection;
             dataAccess.SqlCmd = $"update Details set active ='{0}' where UserId =@id";
 
-            dataAccess.UpdateActive(id);
-            string ResponseMsg = "User deactived";
+                dataAccess.UpdateActive(userId);
+                string ResponseMsg = "User deactived";
 
-            return ResponseMsg;
+                return ResponseMsg;
+            
         }
 
-        public string activateUser(int id)
+        public string activateUser(int userId, int adminId)
         {
             dataAccess.ConnectionString = connection;
             dataAccess.SqlCmd = $"update Details set active ='{1}' where UserId =@id";
-            dataAccess.UpdateActive(id);
+            dataAccess.UpdateActive(userId);
             string ResponseMsg = "User active";
 
             return ResponseMsg;
         }
 
-        public string GetCohort()
+        public string GetCohort(int adminId)
         {
             dataAccess.ConnectionString = connection;
             dataAccess.SqlCmd = $"select [UserId] ,[role],[firstname],[lastname],[email],[active] from Details";
@@ -43,15 +44,15 @@ namespace Onboarding.Models
             return ConvertDataSetasJSON(dataset);
 
         }
-        private static string ConvertDataSetasJSON(DataSet dataSet)
-        {
-            return JsonConvert.SerializeObject(dataSet.Tables[0]);
-        }
-
-        public string AddEmail(string email)
+        
+        public string AddEmail(string email, int adminId)
         {
             dataAccess.ConnectionString = connection;
             return dataAccess.AddEmail(email);
+        }
+        private static string ConvertDataSetasJSON(DataSet dataSet)
+        {
+            return JsonConvert.SerializeObject(dataSet.Tables[0]);
         }
     }
 }
