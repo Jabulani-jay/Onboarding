@@ -91,10 +91,9 @@ namespace Onboarding.Datalayer
             };//end sqlConnection 
             return message;
         }
-        public string UpdateActive(int id)
+        public void UpdateActive(int id, int adminId, string action)
 
         {
-            string ResponseMessage;
 
                 // Try to insert
                 using (SqlConnection myConnection = new(ConnectionString))
@@ -103,9 +102,8 @@ namespace Onboarding.Datalayer
                     using SqlCommand myCommand = new SqlCommand(SqlCmd, myConnection);
                     myCommand.Parameters.AddWithValue("@id",id);
                     myCommand.ExecuteNonQuery();
-                    ResponseMessage = "Account deactivated";
+                    updateLog(adminId, action);
                 };//end sqlConnection 
-            return ResponseMessage;
 
         }
         public string AddEmail(string email)
@@ -135,6 +133,20 @@ namespace Onboarding.Datalayer
                     throw; // Throw exception if this exception is unexpected
             }
 
+        }
+
+        public void updateLog(int adminId, string action)
+        {
+            SqlCmd = "INSERT INTO adminActionLog ([adminId],[action]) VALUES (@adminId, @action)";
+           
+                using (SqlConnection myConnection = new(ConnectionString))
+                {
+                    myConnection.Open();
+                    using SqlCommand myCommand = new SqlCommand(SqlCmd, myConnection);
+                    myCommand.Parameters.AddWithValue("@adminId", Convert.ToInt32(adminId));
+                    myCommand.Parameters.AddWithValue("@action", Convert.ToString(action));
+                    myCommand.ExecuteNonQuery();
+                };//end sqlConnection 
         }
     }
 }

@@ -10,14 +10,17 @@ namespace Onboarding.Models
 {
     public class AdminRepository : IAdmin
     {
+        string action;
         DataAccess dataAccess = new();
         string connection = @"Server=.;Database=Users; trusted_Connection=True";
         public string DeactivateUser(int userId, int adminId)
         {
+            action = $"user {userId} deactivated";
+
             dataAccess.ConnectionString = connection;
             dataAccess.SqlCmd = $"update Details set active ='{0}' where UserId =@id";
 
-                dataAccess.UpdateActive(userId);
+                dataAccess.UpdateActive(userId, adminId, action);
                 string ResponseMsg = "User deactived";
 
                 return ResponseMsg;
@@ -26,9 +29,10 @@ namespace Onboarding.Models
 
         public string activateUser(int userId, int adminId)
         {
+            action = $"user {userId} activated";
             dataAccess.ConnectionString = connection;
             dataAccess.SqlCmd = $"update Details set active ='{1}' where UserId =@id";
-            dataAccess.UpdateActive(userId);
+            dataAccess.UpdateActive(userId, adminId, action);
             string ResponseMsg = "User active";
 
             return ResponseMsg;
@@ -53,6 +57,10 @@ namespace Onboarding.Models
         private static string ConvertDataSetasJSON(DataSet dataSet)
         {
             return JsonConvert.SerializeObject(dataSet.Tables[0]);
+        }
+        private void UpdateLog(int adminId)
+        {
+
         }
     }
 }

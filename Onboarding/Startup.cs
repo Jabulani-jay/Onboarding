@@ -31,6 +31,7 @@ namespace Onboarding
             services.AddScoped<IUser, UserRepository>();
             services.AddScoped<IAdmin, AdminRepository>();
             services.AddScoped<IAuth, AdminDictionary>();
+            services.AddScoped<ISystem, SystemDictionary>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
