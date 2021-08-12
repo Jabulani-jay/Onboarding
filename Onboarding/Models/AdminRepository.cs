@@ -58,9 +58,6 @@ namespace Onboarding.Models
         {
             return JsonConvert.SerializeObject(dataSet.Tables[0]);
         }
-        private void UpdateLog(int adminId)
-        {
-
-        }
+        
     }
 }
