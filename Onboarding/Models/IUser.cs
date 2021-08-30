@@ -12,5 +12,7 @@ namespace Onboarding.Models
         public User Login(string email, string password);
 
         public string PasswordReset(string email, string password);
+
+        public User updateUserInfo(User details);
     }
 }

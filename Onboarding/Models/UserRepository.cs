@@ -69,5 +69,52 @@ namespace Onboarding.Models
             return message;
             
         }
+
+        public User updateUserInfo(User user)
+        {
+            User userdetails = null;
+            dataAccess.ConnectionString = connection;
+            dataAccess.SqlCmd = $"UPDATE [dbo].[details] SET [firstname] = @firstname,[lastname] =@lastname WHERE UserId=@Id";
+
+            dataAccess.updateRecord(user);
+            dataAccess.SqlCmd = $"SELECT * FROM details WHERE UserId={user.UserID}";
+
+            DataSet UserData = dataAccess.GetDataSet();
+
+            foreach (DataTable table in UserData.Tables) // iterate tables
+            {
+                if (table.Rows.Count != 0)
+                {
+                    foreach (DataRow row in table.Rows) // iterate row
+                    {
+
+                        userdetails = new User()
+                        {
+                            UserID = Convert.ToInt32(row[0]),
+                            UserRole = Convert.ToInt32(row[1]),
+                            Firstname = Convert.ToString(row[2]),
+                            Lastname = Convert.ToString(row[3]),
+                            UserEmail = Convert.ToString(row[4]),
+                            Password = "Not available",
+
+                        };
+
+                    }//end foreach row
+                }
+                else
+                {
+                    userdetails = new User()
+                    {
+                        Firstname = "Not available",
+                        Lastname = "Not available",
+                        UserEmail = "Not available",
+                        Password = "Not available",
+                    };
+                }
+
+            }
+
+            return userdetails;
+        }
     }
 }

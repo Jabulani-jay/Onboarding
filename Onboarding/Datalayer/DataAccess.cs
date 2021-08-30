@@ -30,7 +30,23 @@ namespace Onboarding.Datalayer
                 return myDataSet;
             };//end sqlConnection  
         }//end get
+        public void updateRecord(User user)
+        {
+            using (SqlConnection myConnection = new(ConnectionString))
+            using (SqlCommand command = myConnection.CreateCommand())
+            {
+                command.CommandText = SqlCmd;
+                command.Parameters.AddWithValue("@firstname", user.Firstname);
+                command.Parameters.AddWithValue("@lastname", user.Lastname);
+               // command.Parameters.AddWithValue("@email", user.UserEmail);
+                command.Parameters.AddWithValue("@Id",user.UserID);
 
+                myConnection.Open();
+                command.ExecuteNonQuery();
+                myConnection.Close();
+
+            }  
+        }//end get
         public DataSet Login(string email, string password)
         {
             using (SqlConnection myConnection = new(ConnectionString))

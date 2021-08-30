@@ -34,6 +34,12 @@ namespace Onboarding.Controllers
             return _UserRepository.RegisterUser(NewUser);
         }
 
+        [HttpPost("UpdateUser")]
+        public User UpdateUser(User user)
+        {
+            return _UserRepository.updateUserInfo(user);
+        }
+
         [HttpPost("Reset password")]
         public string ResetPassword(string email, string password)
         {
