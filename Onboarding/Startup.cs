@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Onboarding.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,6 +29,7 @@ namespace Onboarding
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDirectoryBrowser();
             services.AddScoped<ILandingPage, LandingPageRepository>();
             services.AddScoped<IUser, UserRepository>();
             services.AddScoped<IAdmin, AdminRepository>();
@@ -53,9 +56,23 @@ namespace Onboarding
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseDefaultFiles();
             app.UseAuthorization();
+            app.UseStaticFiles();// For the wwwroot folder
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                            Path.Combine(Directory.GetCurrentDirectory(), "ProfileImages")),
+                RequestPath = "/ProfileImages"
+            });
+            //Enable directory browsing
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                            Path.Combine(Directory.GetCurrentDirectory(), "ProfileImages")),
+                RequestPath = "/ProfileImages"
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
