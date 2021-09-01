@@ -14,5 +14,10 @@ namespace Onboarding.Models
         public string PasswordReset(string email, string password);
 
         public User updateUserInfo(User details);
+
+        public string UploadImage(ProfileImageDetails image);
+
+        public string GetImageUrl(int id);
+
     }
 }

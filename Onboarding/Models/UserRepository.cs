@@ -1,9 +1,11 @@
-﻿using Onboarding.Datalayer;
+﻿ using Onboarding.Datalayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Data;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace Onboarding.Models
 {
@@ -11,6 +13,12 @@ namespace Onboarding.Models
     {
         DataAccess dataAccess = new();
         string connection = @"Server=.;Database=Users; trusted_Connection=True";
+        public IWebHostEnvironment _hostingEnvironment;
+        public UserRepository(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+
+        }
         public User Login(string email, string password)
         {
             User userdetails=null;
@@ -69,7 +77,6 @@ namespace Onboarding.Models
             return message;
             
         }
-
         public User updateUserInfo(User user)
         {
             User userdetails = null;
@@ -116,5 +123,60 @@ namespace Onboarding.Models
 
             return userdetails;
         }
+
+        public string UploadImage(ProfileImageDetails profileImage)
+        {
+            if (profileImage.files.Length > 0)
+            {
+                try
+                {
+                    if (!Directory.Exists(_hostingEnvironment.WebRootPath + "\\ProfileImages\\"))
+                    {
+                        Directory.CreateDirectory(_hostingEnvironment.WebRootPath + "\\ProfileImages\\");
+                    }
+                    string name = profileImage.files.FileName;
+                    dataAccess.ConnectionString = connection;
+                    dataAccess.SqlCmd = $"SELECT * FROM ImageUpload WHERE UserId={profileImage.UserId}";
+                    DataSet userImageDetails = dataAccess.GetDataSet();
+                    if (userImageDetails.Tables[0].Rows.Count == 0)
+                    {
+                        dataAccess.AddImage(profileImage);
+                        
+                        using (FileStream fileStream = System.IO.File.Create(_hostingEnvironment.WebRootPath + "\\ProfileImages\\" + profileImage.UserId + Path.GetExtension(name)))
+                        {
+                            profileImage.files.CopyTo(fileStream);
+                            fileStream.Flush();
+                        }
+                        return "image added successfully";
+                    }
+                    else {
+                        var path=userImageDetails.Tables[0].Rows[0][1];
+                            System.IO.File.Delete(_hostingEnvironment.WebRootPath +path);
+                        dataAccess.UpdateImage(profileImage);
+                        
+
+                        using (FileStream fileStream = System.IO.File.Create(_hostingEnvironment.WebRootPath + "\\ProfileImages\\" + profileImage.UserId + Path.GetExtension(name)))
+                        {
+                            profileImage.files.CopyTo(fileStream);
+                            fileStream.Flush();
+                            return "image uploaded successfully";
+                        }
+                    }
+                    
+                }
+               catch (Exception ex)
+                {
+
+                    return ex.Message;
+                }
+            }
+            else return "failed to upload";
+        }
+        public string GetImageUrl(int id)
+        {
+            dataAccess.ConnectionString = connection;
+          return  dataAccess.getImageUrl(id);
+        }
+
     }
 }

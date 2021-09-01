@@ -15,14 +15,10 @@ namespace Onboarding.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUser _UserRepository;
-        public IWebHostEnvironment _hostingEnvironment;
-        public UserController(IUser UserRepository, IWebHostEnvironment hostingEnvironment)
+        public UserController(IUser UserRepository)
         {
             _UserRepository = UserRepository;
-            _hostingEnvironment = hostingEnvironment;
         }
-       
-
 
         [HttpGet("Login")]
         public User Login(string email, string password)
@@ -52,37 +48,20 @@ namespace Onboarding.Controllers
 
         [HttpPost("ImageUpload")]
 
-        public async Task<string> uploadImage([FromForm] ProfileImage profileImage)
+        public string UploadImage([FromForm] ProfileImage profileImage)
         {
-            if (profileImage.files.Length > 0)
-            {
-                try
-                {
-                    if (!Directory.Exists(_hostingEnvironment.WebRootPath + "\\ProfileImages\\"))
-                    {
-                        Directory.CreateDirectory(_hostingEnvironment.WebRootPath + "\\ProfileImages\\");
-                    }
-                    string name = profileImage.files.FileName;
-                    var doesExist = System.IO.File.Exists(_hostingEnvironment.WebRootPath + "\\ProfileImages\\" + profileImage.UserId + Path.GetExtension(name));//check if file exists
-                    if (doesExist)
-                    {
-                        System.IO.File.Delete(_hostingEnvironment.WebRootPath + "\\ProfileImages\\" + profileImage.UserId + Path.GetExtension(name));
-                    }
+            ProfileImageDetails profileImageDetails = new ProfileImageDetails();
+            profileImageDetails.UserId = profileImage.UserId;
+            profileImageDetails.files = profileImage.files;
+            profileImageDetails.FilePath = "/ProfileImages/"+profileImage.UserId + Path.GetExtension(profileImage.files.FileName);
+            return _UserRepository.UploadImage(profileImageDetails);
+        }
 
-                    using (FileStream fileStream = System.IO.File.Create(_hostingEnvironment.WebRootPath + "\\ProfileImages\\" + profileImage.UserId+Path.GetExtension(name)))
-                    {
-                        profileImage.files.CopyTo(fileStream);
-                        fileStream.Flush();
-                        return "\\ProfileImages\\" + profileImage.files.FileName;
-                    }
-                }
-                catch (Exception ex)
-                {
+        [HttpPost("ImageUrl")]
 
-                    return ex.Message;
-                }
-            }
-            else return "failed to upload";
+        public string getURL(int id)
+        {
+            return _UserRepository.GetImageUrl(id);
         }
     }
 }

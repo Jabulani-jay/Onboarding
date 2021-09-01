@@ -11,11 +11,6 @@ namespace Onboarding.Models
         public int UserId { get; set; }
 
         public IFormFile files { get; set; }
-        public string FilePath { get; set; }
-
-  //     public DateTime Created { get; set; }
-
-   //    public DateTime Modified { get; set; }
 
     }
 }

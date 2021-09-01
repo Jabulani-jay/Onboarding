@@ -150,7 +150,66 @@ namespace Onboarding.Datalayer
             }
 
         }
+        public void AddImage(ProfileImageDetails profileImageDetails)
+        {
+            SqlCmd = "INSERT INTO ImageUpload (UserId,Path,Created,Modified) VALUES (@UserId,@Path,@Created,@Modified)";
+   
+                // Try to insert
+                using (SqlConnection myConnection = new(ConnectionString))
+                {
+                    myConnection.Open();
+                    using SqlCommand myCommand = new SqlCommand(SqlCmd, myConnection);
+                    myCommand.Parameters.AddWithValue("@UserId", profileImageDetails.UserId);
+                    myCommand.Parameters.AddWithValue("@Path", profileImageDetails.FilePath);
+                    myCommand.Parameters.AddWithValue("@Created", DateTime.Now);
+                    myCommand.Parameters.AddWithValue("@Modified", DateTime.Now);
+                    myCommand.ExecuteNonQuery();
+                };//end sqlConnection 
+            
+        }
 
+        public string getImageUrl(int id)
+        {
+            SqlCmd = $"SELECT * FROM ImageUpload WHERE UserId={id}";
+
+            using (SqlConnection myConnection = new(ConnectionString))
+            {
+                string url=null;
+                myConnection.Open();
+                SqlCommand command = new SqlCommand(SqlCmd, myConnection);
+
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                       url   = reader.GetString(1);
+                    }
+
+
+                }
+                return url;
+                reader.Close();
+
+
+            }
+        }
+        public void UpdateImage(ProfileImageDetails profileImageDetails)
+        {
+            SqlCmd = $"UPDATE [dbo].[ImageUpload] SET [Path] = @Path,[Modified] =@Modified WHERE UserId=@Id";
+
+            // Try to insert
+            using (SqlConnection myConnection = new(ConnectionString))
+            {
+                myConnection.Open();
+                using SqlCommand myCommand = new SqlCommand(SqlCmd, myConnection);
+                myCommand.Parameters.AddWithValue("@Id", profileImageDetails.UserId);
+                myCommand.Parameters.AddWithValue("@Path", profileImageDetails.FilePath);
+                myCommand.Parameters.AddWithValue("@Modified", DateTime.Now);
+                myCommand.ExecuteNonQuery();
+            };//end sqlConnection 
+
+        }
         public void updateLog(int adminId, string action)
         {
             SqlCmd = "INSERT INTO adminActionLog ([adminId],[action]) VALUES (@adminId, @action)";
@@ -164,5 +223,6 @@ namespace Onboarding.Datalayer
                     myCommand.ExecuteNonQuery();
                 };//end sqlConnection 
         }
+       
     }
 }
