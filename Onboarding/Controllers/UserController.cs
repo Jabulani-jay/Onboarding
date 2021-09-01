@@ -63,6 +63,11 @@ namespace Onboarding.Controllers
                         Directory.CreateDirectory(_hostingEnvironment.WebRootPath + "\\ProfileImages\\");
                     }
                     string name = profileImage.files.FileName;
+                    var doesExist = System.IO.File.Exists(_hostingEnvironment.WebRootPath + "\\ProfileImages\\" + profileImage.UserId + Path.GetExtension(name));//check if file exists
+                    if (doesExist)
+                    {
+                        System.IO.File.Delete(_hostingEnvironment.WebRootPath + "\\ProfileImages\\" + profileImage.UserId + Path.GetExtension(name));
+                    }
 
                     using (FileStream fileStream = System.IO.File.Create(_hostingEnvironment.WebRootPath + "\\ProfileImages\\" + profileImage.UserId+Path.GetExtension(name)))
                     {
@@ -70,7 +75,6 @@ namespace Onboarding.Controllers
                         fileStream.Flush();
                         return "\\ProfileImages\\" + profileImage.files.FileName;
                     }
-
                 }
                 catch (Exception ex)
                 {

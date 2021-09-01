@@ -59,20 +59,6 @@ namespace Onboarding
             app.UseDefaultFiles();
             app.UseAuthorization();
             app.UseStaticFiles();// For the wwwroot folder
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                            Path.Combine(Directory.GetCurrentDirectory(), "ProfileImages")),
-                RequestPath = "/ProfileImages"
-            });
-            //Enable directory browsing
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                            Path.Combine(Directory.GetCurrentDirectory(), "ProfileImages")),
-                RequestPath = "/ProfileImages"
-            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
