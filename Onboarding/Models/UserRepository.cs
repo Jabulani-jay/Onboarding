@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Onboarding.Models
 {
@@ -14,6 +15,7 @@ namespace Onboarding.Models
         DataAccess dataAccess = new();
         string connection = @"Server=.;Database=Users; trusted_Connection=True";
         public IWebHostEnvironment _hostingEnvironment;
+
         public UserRepository(IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
@@ -178,5 +180,24 @@ namespace Onboarding.Models
           return  dataAccess.getImageUrl(id);
         }
 
+        public string MarkTaskAsDone(CompletedTask completedTask)
+        {
+            dataAccess.ConnectionString = connection;
+            return dataAccess.MarkTaskAsComplete(completedTask); 
+        }
+
+        public string GetCompleteTasks(int id)
+        {
+            dataAccess.ConnectionString = connection;
+            dataAccess.SqlCmd = $"SELECT * FROM CompletedTask WHERE UserId= '{id}' ";
+            DataSet dataSet = dataAccess.GetDataSet();
+
+            return ConvertDataSetasJSON(dataSet);
+
+        }
+        private static string ConvertDataSetasJSON(DataSet dataSet)
+        {
+            return JsonConvert.SerializeObject(dataSet.Tables[0]);
+        }
     }
 }

@@ -63,5 +63,18 @@ namespace Onboarding.Controllers
         {
             return _UserRepository.GetImageUrl(id);
         }
+
+        [HttpPost("MarkAsDone")]
+
+        public string MarkAsDone(CompletedTask completedTask)
+        {
+            return _UserRepository.MarkTaskAsDone(completedTask);
+        }
+        [HttpPost("GetCompleteTasks")]
+
+        public string GetCompleteTasks(int id)
+        {
+            return _UserRepository.GetCompleteTasks(id);
+        }
     }
 }

@@ -223,6 +223,22 @@ namespace Onboarding.Datalayer
                     myCommand.ExecuteNonQuery();
                 };//end sqlConnection 
         }
-       
+        public string MarkTaskAsComplete(CompletedTask completedTask) {
+            SqlCmd = "INSERT INTO CompletedTask (UserId,TaskCompleted) VALUES (@UserId, @Task)";
+           
+                // Try to insert
+                using (SqlConnection myConnection = new(ConnectionString))
+                {
+                    myConnection.Open();
+                    using SqlCommand myCommand = new SqlCommand(SqlCmd, myConnection);
+                    myCommand.Parameters.AddWithValue("@UserId", completedTask.UserId);
+                    myCommand.Parameters.AddWithValue("@Task", completedTask.Task);
+                myCommand.ExecuteNonQuery();
+                };//end sqlConnection 
+                return "done";
+            
+        }
+
+        
     }
 }

@@ -19,5 +19,8 @@ namespace Onboarding.Models
 
         public string GetImageUrl(int id);
 
+        public string MarkTaskAsDone(CompletedTask completedTask);
+        public string GetCompleteTasks(int id);
+
     }
 }
